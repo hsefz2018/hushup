@@ -1,0 +1,114 @@
+\documentclass[UTF8, 11pt, a4paper]{article}
+\usepackage[cm]{sfmath}
+\usepackage{tabularx}
+\def\arraystretch{1.3}
+\usepackage[a4paper, top=3.18cm,bottom=3.81cm,left=2.54cm,right=2.54cm]{geometry}
+\usepackage{indentfirst}
+\setlength{\parskip}{6pt}
+\XeTeXlinebreaklocale "zh"
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+
+\usepackage{fontspec}
+\setmainfont{思源黑体}
+\SetSymbolFont{largesymbols}{normal}{OMX}{iwona}{m}{n}
+\setmonofont{Source Code Pro}
+
+\begin{document}
+\section*{挑战极限 / Challenge Accepted \makebox[2.5em]{} \small{CACCEPT}}
+
+Kurumi 是一位资深 osu!mania 玩家。%
+当被问起滋瓷哪种键位的时候，Kurumi 总是答道：“我可以跟你们说一句无可奉告。”%
+
+“但是你们又不高兴，我怎么办？” 又一次被问起 “认为 SDFJK 键位吼不吼啊” 的问题之后，%
+Kurumi 表示无奈。“问出来的问题啊，都 too simple！你们这样子是不行的！” 为了摆脱%
+无止境的这些问题，Kurumi 决定告诉新闻工作者们一些人生的经验。
+
+Kurumi 最滋瓷的键位是 $K$。但是 Kurumi 见得多了，决定让新闻工作者们猜出这个键位。%
+对于每一次猜测，Kurumi 都只会给出非常少量的信息，因为 Kurumi 今天算是得罪了新闻工作者们一下。
+
+\subsection*{任务}
+对于一个未知的五个\uwave{互不相同}的字母排列 $K$，%
+通过一系列询问确定 $K$ 中五个字母的排列。
+
+\subsection*{实现}
+你需要实现一个过程 \texttt{newGame()} 用以进行一组 $K$ 的交互过程。%
+该方法不必接收任何参数。
+
+过程 \texttt{newGame()} 可以多次调用函数 \texttt{makeAttempt(a, b, c, d, e)}%
+来进行一次猜测。该函数接收五个字符类型的参数 \texttt{a, b, c, d, e}，并%
+返回一个整数 $R = 10R_1 + R_2 (0 \leq R_1, R_2 \leq 5)$，其中：
+\begin{itemize}
+    \item $R_1$ 表示五个位置中有多少个位置上的字母和 $K$ 中相同（不区分大小写，下同）；
+    \item $R_2$ 表示除去正确的位置上的字母，在本次猜测中还有多少个%
+        \uwave{不同的}字母在 $K$ 中出现过。
+\end{itemize}
+
+过程 \texttt{newGame()} 需要通过一次或多次对 \texttt{makeAttempt(a, b, c, d, e)}%
+的调用来确定 $K$ 中五个字母的排列。当你的程序能够确定这个答案时，把 $K$ 作为参数%
+调用一次 \texttt{makeAttempt}，即 \texttt{makeAttempt(K\_1, K\_2, K\_3, K\_4, K\_5)}，然后退出过程。
+
+\subsection*{样例}
+考虑 \texttt{K = "mikan"} 的栗子。
+
+首先 \texttt{newGame()} 被调用。它进行的工作如下：
+\begin{itemize}
+    \item 调用 \texttt{makeAttempt('m', 'i', 'a', 'k', 'c')}，得到返回值 22；
+    \item 调用 \texttt{makeAttempt('i', 'm', 'a', 'k', 'c')}，得到返回值 4；
+    \item 调用 \texttt{makeAttempt('m', 'i', 'a', 'a', 'c')}，得到返回值 30；
+    \item 调用 \texttt{makeAttempt('m', 'i', 'n', 'a', 'a')}，得到返回值 31；
+    \item 确定答案为 \texttt{K = "mikan"}；
+    \item 调用 \texttt{makeAttempt('m', 'i', 'k', 'a', 'n')}，得到返回值 50 并退出。
+\end{itemize}
+
+\subsection*{评分}
+本题共有 20 个不同的 $K$，\texttt{newGame()} 将\uwave{在同一次程序运行中}被调用 20 次。%
+（这也意味着你可以使用预处理、静态变量等方式来加速程序。）
+
+得分按照下面的方式计算：
+
+$$
+    \mathrm{TotalScore} = A + E
+$$
+
+其中：
+\begin{itemize}
+    \item \textbf{准确度得分} $A$：等于在 20 组数据中获得正确答案的个数。
+    \item \textbf{效率得分} $E$：
+    \begin{itemize}
+        \item 若 $A \neq 20$：$E = 0$；
+        \item 若 $A = 20$：
+            我们设定了一个猜测次数的下界 $L$，但 $L$ 的具体数值在比赛期间不公布。
+            假设你的程序在第 $i$ 组数据上调用了 $C_i$ 次 \texttt{makeAttempt} 函数，那么
+
+            $$
+                E = 80 \cdot \prod_{i = 1}^{20} \min\left(1, \frac{L}{C_i}\right)
+            $$
+    \end{itemize}
+\end{itemize}
+
+\subsection*{细节 \& 本地测试}
+在本题的附件中包含 \texttt{grader.[c|cpp|pas]}，\texttt{caccept.[c|cpp|pas]}，%
+\texttt{compile\_[c|cpp|pas].bat} 以及一些附加文件。
+
+其中 \texttt{grader} 用于本地测试你的程序，\texttt{caccept} %
+分别是对应语言的样例程序，直接在其基础上进行修改即可。%
+修改完毕后，运行 \texttt{compile\_[c|cpp|pas].bat} 来编译你的程序。编译好的程序从%
+\texttt{caccept.in} 读取数据，调用 \texttt{newGame()}，并输出对应的运行结果（正确性和调用次数）。%
+你可以编辑 \texttt{caccept.in} 以测试算法在不同 $K$ 取值上的表现。
+
+输入文件 \texttt{caccept.in} 每行包含五个字母（大小写均可）表示一组数据的 $K$。%
+对于文件中的每一组数据，\texttt{newGame()} 将分别被调用一次。
+
+\subsection*{限制}
+\begin{itemize}
+\item 时间：20.0 秒（所有 20 组数据）
+\item 内存：1.0 GiB
+\end{itemize}
+
+%\begin{figure}[h]\centering
+%\includegraphics[width=0.6 \textwidth]{hako.png}
+%\end{figure}
+
+\end{document}
+
