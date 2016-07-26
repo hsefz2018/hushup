@@ -47,6 +47,8 @@ int makeAttempt(char a, char b, char c, char d, char e)
 
 int main()
 {
+    freopen("caccept.in", "r", stdin);
+
     int i;
     while (!feof(stdin)) {
         for (i = 0; i < 5; ++i) {
@@ -75,6 +77,8 @@ int main()
             printf("failed  T^T\n");
         }
     }
+
+    fclose(stdin);
     return 0;
 }
 

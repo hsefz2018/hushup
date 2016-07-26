@@ -60,6 +60,8 @@ End;
 Var
     i: Integer;
 Begin
+    Assign(Input, 'caccept.in'); Reset(Input);
+
     totCases := 0;
     succCases := 0;
     While not EOF(Input) Do Begin
@@ -85,6 +87,8 @@ Begin
             WriteLn('passed within ', atts[i], ' attempt(s)')
         Else WriteLn('failed  T^T');
     End;
+
+    Close(Input);
     Close(Output);
 End.
 
