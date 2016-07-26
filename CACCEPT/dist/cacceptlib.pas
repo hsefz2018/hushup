@@ -8,12 +8,16 @@ Function makeAttempt(a, b, c, d, e: Char): Integer;
 
 Uses caccept;
 
+Const
+    Max_Tests = 131072;
+
 Var
     s: String;
     totCases, succCases: Integer;
     curAtts: Int64;
     curSucc: Boolean;
-    atts: Array [1 .. 32] of Int64;
+    atts: Array [1 .. Max_Tests] of Int64;
+    eachSucc: Array [1 .. Max_Tests] of Boolean;
 
 Function makeAttempt(a, b, c, d, e: Char): Integer;
 Var
@@ -67,16 +71,20 @@ Begin
         curAtts := 0;
         curSucc := False;
         newGame;
+        eachSucc[totCases] := curSucc;
         If curSucc Then Begin
             inc(succCases);
             atts[totCases] := curAtts;
         End;
     End;
 
-    WriteLn('mekkadondondondondon');
-    WriteLn(totCases, ' ', succCases);
-    For i := 1 to totCases Do Write(atts[i], ' ');
-    WriteLn;
+    Writeln('Passed ', succCases, ' test(s) out of ', totCases);
+    For i := 1 to totCases Do Begin
+        Write('Case #', i, ': ');
+        If eachSucc[i] Then
+            WriteLn('passed within ', atts[i], ' attempt(s)')
+        Else WriteLn('failed  T^T');
+    End;
     Close(Output);
 End.
 

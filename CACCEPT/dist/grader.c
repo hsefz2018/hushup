@@ -49,8 +49,10 @@ int main()
 {
     int i;
     while (!feof(stdin)) {
-        for (i = 0; i < 5; ++i)
+        for (i = 0; i < 5; ++i) {
             do s[i] = lcase(getchar()); while (!isalpha(s[i]) && s[i] != EOF);
+            if (s[i] == EOF) { i = -1; break; }
+        }
         if (i < 5) break;
         if (validate()) {
             ++tot_cases;
