@@ -1,0 +1,98 @@
+\documentclass[UTF8, 11pt, a4paper]{article}
+\usepackage[cm]{sfmath}
+\usepackage{tabularx}
+\def\arraystretch{1.3}
+\usepackage[a4paper, top=3.18cm,bottom=3.81cm,left=2.54cm,right=2.54cm]{geometry}
+\usepackage{indentfirst}
+\setlength{\parskip}{6pt}
+\XeTeXlinebreaklocale "zh"
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+
+\usepackage{fontspec}
+\setmainfont{思源黑体}
+\SetSymbolFont{largesymbols}{normal}{OMX}{iwona}{m}{n}
+\setmonofont{Source Code Pro}
+
+\begin{document}
+\section*{举步维艰 / Stumbler \makebox[2.5em]{} \small{STUMBLER}}
+Gravitus 是一位资深 osu! 玩家。
+
+这天 Gravitus 正在研究一张谱面的图形形状。这个二维平面上的形状由许多打击物件组成，%
+每个物件可以是圆圈 (Circle) 或者滑条 (Slider) 中的一种。
+
+当然这个谱面是无法做到全连的 ←\_←。尽管如此，Gravitus 还是决定体验一把。%
+屏幕上突然同时出现了很多很多的打击物件，而此时 Gravitus 的鼠标停留在屏幕中央 $(0, 0)$ %
+处。Gravitus 决定等概率随机选择一个 $[-\pi, +\pi)$ 中的角度 $\theta$，然后将鼠标沿着%
+与横坐标轴正半轴夹角 $\theta$ 的射线方向不断移动鼠标，直到鼠标碰到某个物件时停止。
+
+Gravitus 发现，对于每个满足条件的 $\theta \in [-\pi, +\pi)$，射线都会与至少一个打击物件有%
+公共点。也就是说，无论 $\theta$ 的取值如何，总能在鼠标经过有限距离后触碰到一个打击物件。
+
+\subsection*{任务}
+对于给定的谱面描述，计算 Gravitus 进行这样的操作时鼠标经过距离的期望值。
+
+\subsection*{输入 \makebox[0.5em]{} \small{stumbler.in}}
+\begin{itemize}
+    \item 第 $1$ 行：两个整数 $N_\mathrm{C}$ 和 $N_\mathrm{S}$，分别表示圆圈和滑条的数量。
+    \item 第 $2 \sim N_\mathrm{C} + 1$ 行：%
+        每行三个整数 $X$、$Y$、$R$，依次描述一个圆圈的圆心横纵坐标和半径长度。
+    \item 第 $N_\mathrm{C} + 2 \sim N_\mathrm{C} + N_\mathrm{S} + 1$ 行：%
+        每行五个整数 $X_1$、$Y_1$、$X_2$、$Y_2$、$R$，依次描述一个滑条两端圆心的横纵坐标和圆的半径长度。
+\end{itemize}
+
+\subsection*{输出 \makebox[0.5em]{} \small{stumbler.out}}
+\begin{itemize}
+    \item 第 $1$ 行：一个正实数 $D$ 表示鼠标经过距离的期望值。
+\end{itemize}
+
+在评分时，设陪审团给出的答案为 $D^*$，那么当 $D$ 与 $D^*$ 的相对或绝对误差不超过 %
+$10^{-6}$，即 $\min(|D^* - D|, \frac{|D^* - D|}{D^*}) \leq 10^{-6}$ 时，答案被判定为正确。
+
+\subsection*{样例}
+\begin{table}[h]\centering
+\begin{tabularx}{0.8 \textwidth}{|X|X|}
+\hline
+\texttt{\textbf{stumbler.in}} & \texttt{\textbf{stumbler.out}} \\ \hline
+{\ttfamily
+} & {\ttfamily
+}
+\\ \hline
+\end{tabularx}\end{table}
+
+\subsection*{数据规模与约定}
+对于所有子任务，有 $0 \leq N_\mathrm{C}, N_\mathrm{S} \leq 1\,000$。
+\subsubsection*{子任务 1 “Easy” (20 pts)}
+\begin{itemize}
+    \item $N_\mathrm{S} = 0$。
+    \item 所有的圆圈的半径均为 $1$。
+    \item 保证所有打击物件两两互不相交。
+\end{itemize}
+\subsubsection*{子任务 2 “Normal” (20 pts)}
+\begin{itemize}
+    \item $N_\mathrm{S} = 0$。
+    \item 保证所有打击物件两两互不相交。
+\end{itemize}
+\subsubsection*{子任务 3 “Hard” (27 pts)}
+\begin{itemize}
+    \item 保证所有打击物件两两互不相交。
+\end{itemize}
+\subsubsection*{子任务 4 “Insane” (16 pts)}
+\begin{itemize}
+    \item $N_\mathrm{S} = 0$。
+\end{itemize}
+\subsubsection*{子任务 5 “Another” (17 pts)}
+    没有任何附加限制。
+
+\subsection*{限制}
+\begin{itemize}
+\item 时间：1.0 秒
+\item 内存：256.0 MiB
+\end{itemize}
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.55]{stumbler.png}
+\end{figure}
+
+\end{document}
+
