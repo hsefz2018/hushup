@@ -16,8 +16,16 @@
 
 \begin{document}
 \section*{走火入魔 / Obsessed \makebox[2.5em]{} \small{OBSESSED}}
+Pye 是一位资深 osu!taiko 玩家。%
+这个游戏让 Pye 神奇地改掉了多年来听歌抖腿的习惯——现在变成敲桌子啦！
 
-Lorem ipsum dolor sit amet
+当 SS 变得唾手可得，随(tséi)便玩就能进 rank 100 时，Pye 觉得，是时候造个大新闻了，%
+是时候自己制作一张谱面（或者说，“图”）了。
+
+Pye 非常(sháng)希望做出一张正常的谱面，特别是不能在短时间内出现反复按同一个键的%
+要求，因为这样不仅会使得游戏时的音符难以分辨，也会大大提高对手速，甚至键盘的苛刻要求。
+
+尽管谱面编辑器并没有提供这个功能，但 Pye 才不需要你的帮助呢！
 
 \subsection*{任务}
 给定 Pye 在编辑谱面时的操作顺序，其中包含一系列询问，计算出每个询问的答案。
@@ -38,14 +46,14 @@ Lorem ipsum dolor sit amet
             \item 如果时刻 $i$ 的位置上有一个鼓边音符，则将其改为鼓面音符。
         \end{itemize}
     \item \texttt{Inspect <L> <R>}：%
-        询问所有满足 $L \leq i \leq R$ 的时刻 $i$ 上的音符中，最近的一对%
-        种类相同的音符之间的距离。如果这样的一对音符不存在，答案为 -1。
+        询问所有满足 $L \leq i \leq R$ 的时刻 $i$ 上的音符中，最近的一对种类相同的音符%
+        （Don 与 Don、Kat 与 Kat）所在时刻之差的绝对值。如果这样的一对音符不存在，答案为 -1。
 \end{itemize}
 
 \subsection*{输入 \makebox[0.5em]{} \small{obsessed.in}}
 \begin{itemize}
     \item 第 $1$ 行：两个正整数 $N$ 和 $M$，分别表示谱面长度和操作数目。
-    \item 第 $2 \sim M + 1$ 行：每行描述一个操作，格式与“任务”一节中的描述相同。
+    \item 第 $2 \sim M + 1$ 行：每行描述一个操作，格式与“任务”一节中的描述相同，且所有数字均为 $[1, N]$ 内的正整数。
 \end{itemize}
 
 \subsection*{输出 \makebox[0.5em]{} \small{obsessed.out}}
@@ -87,28 +95,26 @@ Inspect 2 4
 \end{tabularx}\end{table}
 
 \subsection*{数据规模与约定}
-\subsubsection*{子任务 1 “Kantan”}
+对于所有子任务，有 $2 \leq N, M \leq 300\,000$。
+\subsubsection*{子任务 1 “Kantan” (8 pts)}
 \begin{itemize}
     \item $N = 2$。
 \end{itemize}
-\subsubsection*{子任务 2 “Futsuu”}
+\subsubsection*{子任务 2 “Futsuu” (17 pts)}
 \begin{itemize}
     \item $N, M \leq 1\,000$。
 \end{itemize}
-\subsubsection*{子任务 3 “Muzukashii”}
+\subsubsection*{子任务 3 “Muzukashii” (28 pts)}
 \begin{itemize}
     \item 没有 \texttt{Invert} 操作。
 \end{itemize}
-\subsubsection*{子任务 4 “Inner Oni”}
+\subsubsection*{子任务 4 “Inner Oni” (22 pts)}
 \begin{itemize}
     \item 没有 \texttt{Kat} 和 \texttt{Invert} 操作。
     \item 所有 \texttt{Don} 操作的 $P$ 值严格单调递增。
 \end{itemize}
-\subsubsection*{子任务 5 “Oni”}
-没有任何附加限制。
-
-另外，对于所有子任务，有 $2 \leq N, M \leq 300\,000$，且输入数据的格式与%
-“任务”一节中的描述相同。
+\subsubsection*{子任务 5 “Oni” (25 pts)}
+    没有任何附加限制。
 
 \subsection*{限制}
 \begin{itemize}
