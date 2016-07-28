@@ -15,24 +15,31 @@
 \setmonofont{Source Code Pro}
 
 \begin{document}
-\section*{走火入魔 / Obsessed \makebox[2.5em]{} \small{OBSESSED}}
+\section*{走火入魔 / Obsessed \makebox[2.5em]{} \small{「OBSESSED」}}
 Pye 是一位资深 osu!taiko 玩家。%
 这个游戏让 Pye 神奇地改掉了多年来听歌抖腿的习惯——现在变成敲桌子啦！
 
-当 SS 变得唾手可得，随(tséi)便玩就能进 rank 100 时，Pye 觉得，是时候造个大新闻了，%
-是时候自己制作一张谱面（或者说，“图”）了。
+当 SS 变得唾手可得，历史记录中充斥着 rank 100 时，Pye 觉得，%
+是时候造个大新闻了，是时候自己制作一张谱面了。
 
-Pye 非常(sháng)希望做出一张正常的谱面，特别是不能在短时间内出现反复按同一个键的%
-要求，因为这样不仅会使得游戏时的音符难以分辨，也会大大提高对手速，甚至键盘的苛刻要求。
+整个谱面被 $N$ 个编号从 1 开始的时刻分为许多等长的小段。%
+在谱面每一个时刻的位置上必为下列 3 种情况之一：空、鼓面音符（咚，Don）、%
+鼓边音符（咔，Kat）。
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.2]{desc.png}
+\end{figure}
+
+Pye 希望做出一张正常向的谱面，特别是不能在短时间内出现反复按同一个键的%
+要求，因为这样不仅会使得游戏时的音符难以分辨，也会使得对手速，%
+甚至键盘的苛刻要求难以满足，进而降低游戏性。因此 Pye 特别关注的数值之一就是%
+最近的一对种类相同的音符（Don 与 Don、Kat 与 Kat）所在时刻之差的绝对值。
 
 尽管谱面编辑器并没有提供这个功能，但 Pye 才不需要你的帮助呢！
 
 \subsection*{任务}
 给定 Pye 在编辑谱面时的操作顺序，其中包含一系列询问，计算出每个询问的答案。
 
-用 $N$ 表示谱面长度。也就是说，整个谱面被 $N$ 个编号从 1 开始的时刻分为许多等长的小段。%
-在谱面每一个时刻的位置上必为下列 3 种情况之一：空、鼓面音符（咚，Don）、%
-鼓边音符（咔，Kat）。
 
 操作分为以下 4 种：
 \begin{itemize}
@@ -53,7 +60,7 @@ Pye 非常(sháng)希望做出一张正常的谱面，特别是不能在短时�
 \subsection*{输入 \makebox[0.5em]{} \small{obsessed.in}}
 \begin{itemize}
     \item 第 $1$ 行：两个正整数 $N$ 和 $M$，分别表示谱面长度和操作数目。
-    \item 第 $2 \sim M + 1$ 行：每行描述一个操作，格式与“任务”一节中的描述相同，且所有数字均为 $[1, N]$ 内的正整数。
+    \item 第 $2 \sim M + 1$ 行：每行描述一个操作，格式与“任务”一节中的描述相同，且所有涉及的数字均为 $[1, N]$ 范围内的正整数。
 \end{itemize}
 
 \subsection*{输出 \makebox[0.5em]{} \small{obsessed.out}}
@@ -104,12 +111,12 @@ Inspect 2 4
 \begin{itemize}
     \item $N, M \leq 1\,000$。
 \end{itemize}
-\subsubsection*{子任务 3 “Muzukashii” (25 pts)}
+\subsubsection*{子任务 3 “Inner Oni” (25 pts)}
 \begin{itemize}
     \item 没有 \texttt{Kat} 和 \texttt{Invert} 操作。
     \item 所有 \texttt{Don} 操作的 $P$ 值严格单调递增。
 \end{itemize}
-\subsubsection*{子任务 4 “Inner Oni” (28 pts)}
+\subsubsection*{子任务 4 “Muzukashii” (28 pts)}
 \begin{itemize}
     \item 没有 \texttt{Invert} 操作。
 \end{itemize}
