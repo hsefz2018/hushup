@@ -27,12 +27,12 @@ inline double calc(double ang)
     // Brute force
     double d, l;
     for (int i = 0; i < nc; ++i) {
-        if (angle_dist(atan2(cy[i], cx[i]), ang) <= M_PI / 2 + EPS && (d = dist_p2l(cx[i], cy[i], ang)) <= cr[i] + EPS) {
+        if (angle_dist(atan2(cy[i], cx[i]), ang) <= M_PI / 2 + EPS &&
+            (d = dist_p2l(cx[i], cy[i], ang)) <= cr[i] + EPS)
+        {
             l = sqrt(sqr(cr[i]) - sqr(d));
             ans = std::min(ans, sqrt(dist_sqr(cx[i], cy[i]) - sqr(d)) - l);
-            //printf("> (%d,%d)R=%d | %.4lf\n", cx[i], cy[i], cr[i], sqrt(dist_sqr(cx[i], cy[i]) - sqr(d)) - l);
         }
-        //printf("> (%d,%d)R=%d | %d | D=%.4lf\n", cx[i], cy[i], cr[i], cx[i] * sign(ang) >= 0, dist_p2l(cx[i], cy[i], ang));
     }
     return ans;
 }
@@ -61,30 +61,6 @@ int main()
     for (int i = 0; i < ns; ++i)
         scanf("%d%d%d%d%d", &sx1[i], &sy1[i], &sx2[i], &sy2[i], &sr[i]);
 
-    printf("%.12lf\n", calc(-60.0 / 180 * M_PI));
-    //return 0;
-    double a[18] = {
-        -180.000000,
-        -138.406857,
-        -138.189685,
-        -137.349826,
-        -115.332939,
-        -67.906346 ,
-        -65.270039 ,
-        -48.590378 ,
-        -41.018298 ,
-        22.232277 ,
-        48.590378 ,
-        60.000000 ,
-        61.034802 ,
-        116.683269 ,
-        120.000000 ,
-        138.189685 ,
-        153.316731 , 180};
-    for (int i = 0; i < 17; ++i) {
-        double tot_area = simpson(a[i] / 180 * M_PI, a[i + 1] / 180 * M_PI, EPS);
-        printf("%.2lf %.2lf %.12lf\n", a[i], a[i + 1], tot_area);
-    }
     double tot_area = simpson(-M_PI, M_PI - EPS, EPS);
     printf("%.12lf\n", tot_area);
 
