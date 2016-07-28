@@ -15,11 +15,13 @@
 \setmonofont{Source Code Pro}
 
 \begin{document}
-\section*{举步维艰 / Stumbler \makebox[2.5em]{} \small{STUMBLER}}
-Gravitus 是一位资深 osu! 玩家。
+\section*{举步维艰 / Stumbler \makebox[2.5em]{} \small{「STUMBLER」}}
+Gravitus 是一位资深 osu! 玩家。%
+自从最近入手了一个无限大的显示器，这个游戏的谱面真是变得越来越有趣了……
 
 这天 Gravitus 正在研究一张谱面的图形形状。这个二维平面上的形状由许多打击物件组成，%
-每个物件可以是圆圈 (Circle) 或者滑条 (Slider) 中的一种。其中滑条是一种操场形的物体，具体可参考下图。
+每个物件可以是圆圈 (Circle) 或者滑条 (Slider) 中的一种。其中滑条是%
+由两端的圆和联结圆心的宽度等于圆直径的矩形组成的一种“操场形”的物体，具体可参考下图。
 
 \begin{figure}[h]\centering
 \includegraphics[scale=0.2]{desc.png}
@@ -34,8 +36,14 @@ Gravitus 发现，对于每个满足条件的 $\theta \in [-\pi, +\pi)$，射线
 公共点。也就是说，无论 $\theta$ 的取值如何，总能在鼠标经过有限距离后触碰到一个打击物件。%
 另外，鼠标的初始位置 $(0, 0)$ 不在任何一个物件的内部或边缘上。
 
+那么 Gravitus 到底会把鼠标移动多长的距离呢？Gravitus 自己也不知道。
+
 \subsection*{任务}
-对于给定的谱面描述，计算 Gravitus 进行这样的操作时鼠标经过距离的期望值。
+对于给定的谱面描述（保证满足上述条件，不必进行检查），%
+计算 Gravitus 进行这样的操作时鼠标经过距离的期望值。
+
+（提示：鼠标经过距离的期望值 = 位于 $(0,0)$ 向四周环顾时，%
+未被打击物件阻挡的视野范围面积 $S$ 除以 $2\pi$ 所得的商值。）
 
 \subsection*{输入 \makebox[0.5em]{} \small{stumbler.in}}
 \begin{itemize}
@@ -48,7 +56,7 @@ Gravitus 发现，对于每个满足条件的 $\theta \in [-\pi, +\pi)$，射线
 
 \subsection*{输出 \makebox[0.5em]{} \small{stumbler.out}}
 \begin{itemize}
-    \item 第 $1$ 行：一个正实数 $D$ 表示鼠标经过距离的期望值。
+    \item 第 $1$ 行：一个正实数 $D$ 表示鼠标经过距离的期望值，用十进制直接表示，精度任意。
 \end{itemize}
 
 在评分时，设陪审团给出的答案为 $D^*$，那么当 $D$ 与 $D^*$ 的相对或绝对误差不超过 %
@@ -73,6 +81,8 @@ $10^{-6}$，即 $\min\left(|D^* - D|, \frac{|D^* - D|}{D^*}\right) \leq 10^{-6}$
 }
 \\ \hline
 \end{tabularx}\end{table}
+
+该样例对应的图形与题目描述中给出的图形相同。
 
 \subsection*{数据规模与约定}
 对于所有子任务，有 $0 \leq N_\mathrm{C}, N_\mathrm{S} \leq 1\,000$，%
