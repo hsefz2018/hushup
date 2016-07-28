@@ -37,19 +37,27 @@ double ang[MAXN * 4];
 int *idx;
 double area[MAXN * 4];
 
+inline double arc(double alpha, double beta)
+{
+    if (fabs(alpha - beta) < M_PI) return alpha - beta;
+    else return 2 * M_PI + alpha - beta;
+}
+
 inline double circle_area(double d, double r, double alpha)
 {
     double x, beta;
     x = r * r - sqr(d * sin(alpha));
-    if (fabs(x) < EPS) {
+    if (fabs(x) <= EPS) {
         x = d * cos(alpha);
-        beta = (alpha < 0 ? -alpha - M_PI / 2 : M_PI / 2 - alpha);
+        beta = (alpha < 0 ? alpha + M_PI / 2 : M_PI / 2 - alpha);
     } else {
         x = d * cos(alpha) - sqrt(x);
         beta = acos((d * d + r * r - x * x) / (2.0 * d * r));
     }
-    //printf("%.3lf %.3lf\n%.3lf %.3lf\n",
-    //    x, beta / M_PI * 180, 0.5 * d * x * sin(alpha), beta * r * r);
+    printf("# %.3lf %.3lf %.3lf\n%% %.3lf\n",
+        alpha / M_PI * 180, x, beta / M_PI * 180, 0.5 * (d * x * sin(alpha) - beta * r * r * (alpha < 0 ? -1 : 1)));
+    //printf("%.2lf %.2lf %.2lf    ", d, r, alpha / M_PI * 180);
+    //printf("\t-> %.4lf\n", 0.5 * (d * x * sin(alpha) - beta * r * r * (alpha < 0 ? -1 : 1)));
     return 0.5 * (d * x * sin(alpha) - beta * r * r * (alpha < 0 ? -1 : 1));
 }
 
@@ -63,10 +71,15 @@ inline void update_circle(int l, int r, int x, int y, int radius)
     } else {
         double cen = atan2(y, x);
         double dis = dist(x, y);
+        //printf("> %d %d %d\n", x, y, radius);
         for (int i = l; i < r; ++i) {
+            //if (i == 0)
+            //    printf("> %.4lf %.4lf\n", ang[i + 1] / M_PI * 180, cen / M_PI * 180);
+                    //circle_area(dis, radius, ang[i + 1] - cen),
+                    //circle_area(dis, radius, ang[i] - cen));
             area[i] = std::min(area[i],
-                circle_area(dis, radius, ang[i + 1] - cen) -
-                circle_area(dis, radius, ang[i] - cen));
+                circle_area(dis, radius, arc(ang[i + 1], cen)) -
+                circle_area(dis, radius, arc(ang[i], cen)));
         }
     }
 }
@@ -127,8 +140,8 @@ int main()
     double ans = 0;
     for (int i = 0; i < pts - 1; ++i) ans += area[i];
     printf("%.12lf\n", ans);
-    //for (int i = 0; i < pts - 1; ++i)
-    //    printf("%.2lf %.2lf\t%.4lf\n", ang[i] / M_PI * 180, ang[i + 1] / M_PI * 180, area[i]);
+    for (int i = 0; i < pts - 1; ++i)
+        printf("%.2lf %.2lf\t%.4lf\n", ang[i] / M_PI * 180, ang[i + 1] / M_PI * 180, area[i]);
 
     return 0;
 }
