@@ -74,8 +74,6 @@ inline void update_circle(int l, int r, int x, int y, int radius)
 
 inline double line_slice_area(double alpha, double beta, double x1, double y1, double x2, double y2)
 {
-    //printf("%.2lf %.2lf (%.2lf,%.2lf) - (%.2lf,%.2lf)\n",
-    //    alpha / M_PI * 180, beta / M_PI * 180, x1, y1, x2, y2);
     // Equation of line (x1,y1)-(x2,y2)
     double a = y1 - y2, b = x2 - x1, c = a * x1 + b * y1;
     double h = fabs(c) / sqrt(a * a + b * b);
@@ -97,9 +95,6 @@ inline void update_line(int l, int r, double x1, double y1, double x2, double y2
 
 int main()
 {
-    //printf("%.12lf\n", line_slice_area(
-    //    62.17 / 180 * M_PI, 103.26 / 180 * M_PI, -3, 4, 3.5, 5.14));
-
     scanf("%d%d", &nc, &ns);
     pts = 0;
     for (int i = 0; i < nc; ++i) {

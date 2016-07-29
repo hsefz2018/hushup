@@ -40,15 +40,11 @@ inline void upd_by_line(double &ans, const double ang,
     } else {
         if (ang > seg_end + EPS && ang < seg_begin - EPS) return;
     }
-    //printf("%.2lf - %.2lf | %.2lf\n",
-    //    seg_begin / M_PI * 180, seg_end / M_PI * 180, ang / M_PI * 180);
     // Equation of line (x1,y1)-(x2,y2)
     double a = y1 - y2, b = x2 - x1, c = a * x1 + b * y1;
     double h = fabs(c) / sqrt(a * a + b * b);
     double h_ang = atan2(y1 - y2, x1 - x2) + M_PI / 2;
     double d = fabs(h / cos(h_ang - ang));
-    //printf("(%.2lf,%.2lf) - (%.2lf,%.2lf) | Angle = %.3lf | Ans = %.3lf\n",
-    //    x1, y1, x2, y2, ang / M_PI * 180, d);
     ans = std::min(ans, d);
 }
 inline double calc(double ang)
@@ -94,36 +90,7 @@ int main()
     for (int i = 0; i < ns; ++i)
         scanf("%d%d%d%d%d", &sx1[i], &sy1[i], &sx2[i], &sy2[i], &sr[i]);
 
-    //printf("%.12lf\n", calc(36.87 / 180 * M_PI));
-
-    /*double a[] = {
-        -180.000000,
-        -138.590378,
-        -129.516274,
-        -121.366978,
-        -56.655723 ,
-        -50.700685 ,
-        -41.409622 ,
-        36.869898 ,
-        44.012951 ,
-        44.606943 ,
-        59.160409 ,
-        61.389540 ,
-        61.927513 ,
-        103.644085 ,
-        118.610460 ,
-        120.839591 ,
-        124.817933 ,
-        129.486018 ,
-        144.861844 ,
-        145.182067 ,
-        145.973312 ,180};
-    for (int i = 0; i < 21; ++i) {
-        printf("%.4lf %.4lf | %.12lf\n",
-            a[i], a[i + 1], simpson(a[i] / 180 * M_PI, a[i + 1] / 180 * M_PI, EPS));
-    }*/
     double tot_area = simpson(-M_PI, M_PI - EPS, EPS);
-    //double tot_area = simpson(-41.41 / 180 * M_PI, 36.87 / 180 * M_PI, EPS);
     printf("%.12lf\n", tot_area);
 
     return 0;
