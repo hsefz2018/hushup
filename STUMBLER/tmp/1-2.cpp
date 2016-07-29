@@ -42,10 +42,9 @@ inline double arc(double alpha, double beta)
     if (fabs(alpha - beta) < M_PI) return alpha - beta;
     else return 2 * M_PI + alpha - beta;
 }
-
-inline double circle_area(double d, double r, double alpha)
+inline double circle_slice_area(double d, double r, double alpha)
 {
-    if (alpha < 0) return -circle_area(d, r, -alpha);
+    if (alpha < 0) return -circle_slice_area(d, r, -alpha);
     double x, beta;
     x = r * r - sqr(d * sin(alpha));
     if (fabs(x) <= EPS) {
@@ -57,7 +56,6 @@ inline double circle_area(double d, double r, double alpha)
     }
     return 0.5 * (d * x * sin(alpha) - beta * r * r);
 }
-
 inline void update_circle(int l, int r, int x, int y, int radius)
 {
     if (l > r) {
@@ -68,18 +66,40 @@ inline void update_circle(int l, int r, int x, int y, int radius)
         double dis = dist(x, y);
         for (int i = l; i < r; ++i) {
             area[i] = std::min(area[i],
-                circle_area(dis, radius, arc(ang[i + 1], cen)) -
-                circle_area(dis, radius, arc(ang[i], cen)));
+                circle_slice_area(dis, radius, arc(ang[i + 1], cen)) -
+                circle_slice_area(dis, radius, arc(ang[i], cen)));
         }
     }
 }
 
-inline void update_line(int l, int r, int x1, int y1, int x2, int y2)
+inline double line_slice_area(double alpha, double beta, double x1, double y1, double x2, double y2)
 {
+    //printf("%.2lf %.2lf (%.2lf,%.2lf) - (%.2lf,%.2lf)\n",
+    //    alpha / M_PI * 180, beta / M_PI * 180, x1, y1, x2, y2);
+    // Equation of line (x1,y1)-(x2,y2)
+    double a = y1 - y2, b = x2 - x1, c = a * x1 + b * y1;
+    double h = fabs(c) / sqrt(a * a + b * b);
+    double h_ang = atan2(y1 - y2, x1 - x2) + M_PI / 2;
+    double acute = h_ang - alpha, react = beta - h_ang;
+    return 0.5 * h * h * (tan(acute) + tan(react));
+}
+inline void update_line(int l, int r, double x1, double y1, double x2, double y2)
+{
+    if (l > r) {
+        update_line(l, pts - 1, x1, y1, x2, y2);
+        update_line(0, r, x1, y1, x2, y2);
+    } else {
+        for (int i = l; i < r; ++i) {
+            area[i] = std::min(area[i], line_slice_area(ang[i], ang[i + 1], x1, y1, x2, y2));
+        }
+    }
 }
 
 int main()
 {
+    //printf("%.12lf\n", line_slice_area(
+    //    62.17 / 180 * M_PI, 103.26 / 180 * M_PI, -3, 4, 3.5, 5.14));
+
     scanf("%d%d", &nc, &ns);
     pts = 0;
     for (int i = 0; i < nc; ++i) {
@@ -96,10 +116,10 @@ int main()
         sd2[i] = dist(sx2[i], sy2[i]);
         double len = dist(sx1[i] - sx2[i], sy1[i] - sy2[i]);
         ang[pts++] = atan2(sy1[i], sx1[i]) - asin((double)sr[i] / sd1[i]);
-        ang[pts++] = atan2(sy1[i] + (double)(sx2[i] - sx1[i]) / len,
-                           sx1[i] + (double)(sy1[i] - sy2[i]) / len);
-        ang[pts++] = atan2(sy2[i] + (double)(sx2[i] - sx1[i]) / len,
-                           sx2[i] + (double)(sy1[i] - sy2[i]) / len);
+        ang[pts++] = atan2(sy1[i] + (double)(sx2[i] - sx1[i]) * sr[i] / len,
+                           sx1[i] + (double)(sy1[i] - sy2[i]) * sr[i] / len);
+        ang[pts++] = atan2(sy2[i] + (double)(sx2[i] - sx1[i]) * sr[i] / len,
+                           sx2[i] + (double)(sy1[i] - sy2[i]) * sr[i] / len);
         ang[pts++] = atan2(sy2[i], sx2[i]) + asin((double)sr[i] / sd2[i]);
     }
     for (int i = 0; i < pts; ++i)
@@ -119,10 +139,10 @@ int main()
         update_circle(idx[nc * 2 + i * 4 + 2], idx[nc * 2 + i * 4 + 3], sx2[i], sy2[i], sr[i]);
         double len = dist(sx1[i] - sx2[i], sy1[i] - sy2[i]);
         update_line(idx[nc * 2 + i * 4 + 1], idx[nc * 2 + i * 4 + 2],
-            sy1[i] + (double)(sx2[i] - sx1[i]) / len,
-            sx1[i] + (double)(sy1[i] - sy2[i]) / len,
-            sy2[i] + (double)(sx2[i] - sx1[i]) / len,
-            sx2[i] + (double)(sy1[i] - sy2[i]) / len);
+            sx1[i] + (double)(sy1[i] - sy2[i]) * sr[i] / len,
+            sy1[i] + (double)(sx2[i] - sx1[i]) * sr[i] / len,
+            sx2[i] + (double)(sy1[i] - sy2[i]) * sr[i] / len,
+            sy2[i] + (double)(sx2[i] - sx1[i]) * sr[i] / len);
     }
 
     double ans = 0;
