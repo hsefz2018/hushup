@@ -25,7 +25,7 @@ Kurumi 表示无奈，“问出来的问题啊，都 too simple！你们这样�
 这些无止境的问题，Kurumi 决定告诉新闻工作者们一些人生的经验。
 
 Kurumi 最滋瓷的键位排列是一个五个不同字母的排列 $K_{1 \dots 5}$。%
-但是 Kurumi 见得多了，决定让新闻工作者们猜出这个键位。%
+但是 Kurumi 是身经百战了，见得多了，决定让新闻工作者们猜出这个键位。%
 对于每一次猜测，Kurumi 都只会给出非常少量的信息，所以 Kurumi 今天算是得罪了他们一下。
 
 \subsection*{任务}
@@ -51,25 +51,25 @@ Kurumi 最滋瓷的键位排列是一个五个不同字母的排列 $K_{1 \dots 
 调用一次 \texttt{makeAttempt}，即 \texttt{makeAttempt(K\_1, K\_2, K\_3, K\_4, K\_5)}，然后退出过程。
 
 \subsection*{样例}
-考虑 \texttt{K = "mikan"} 的栗子。
+考虑 \texttt{K = "sdfjk"} 的栗子。
 
 首先 \texttt{newGame()} 被调用。它进行的工作如下：
 \begin{itemize}
-    \item 调用 \texttt{makeAttempt('m', 'i', 'a', 'k', 'c')}，得到返回值 22；
-    \item 调用 \texttt{makeAttempt('i', 'm', 'a', 'k', 'c')}，得到返回值 4；
-    \item 调用 \texttt{makeAttempt('m', 'i', 'a', 'a', 'c')}，得到返回值 30；
-    \item 调用 \texttt{makeAttempt('m', 'i', 'n', 'a', 'a')}，得到返回值 31；
-    \item 调用 \texttt{makeAttempt('m', 'i', 'k', 'a', 'n')}，得到返回值 50 并退出。
+    \item 调用 \texttt{makeAttempt('s', 'd', 'j', 'k', 'l')}，得到返回值 22；
+    \item 调用 \texttt{makeAttempt('d', 's', 'j', 'k', 'l')}，得到返回值 4；
+    \item 调用 \texttt{makeAttempt('s', 'd', 'f', 'o', 'p')}，得到返回值 30；
+    \item 调用 \texttt{makeAttempt('s', 'd', 'f', 'k', 'p')}，得到返回值 31；
+    \item 调用 \texttt{makeAttempt('s', 'd', 'f', 'j', 'k')}，得到返回值 50 并退出。
 \end{itemize}
 
 \subsection*{评分}
-本题共有 20 个预先生成的不同的 $K$，\texttt{newGame()} 将\uwave{在同一次程序运行中}被调用 20 次。%
-（因此你可以使用预处理、静态变量等方式来加速程序。）
+评分时，本题共有 20 个预先确定的不同的 $K$，\texttt{newGame()} 将\uwave{在同一次程序运行中}被调用恰好 20 次。%
+（因此你可以使用预处理、静态/全局变量等方式来加速程序。）
 
 若程序发生运行时错误或运行超过时限，本次提交得分为 0；否则得分按照下面的方式计算：
 
 $$
-    \mathrm{TotalScore} = A + E
+    \mathrm{TotalScore} = \lfloor A + E \rfloor
 $$
 
 其中：
