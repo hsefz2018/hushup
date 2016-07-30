@@ -28,6 +28,9 @@ inline void upd_by_circle(double &ans, const double ang, const int x, const int 
         (d = dist_p2l(x, y, ang)) <= r + EPS)
     {
         l = sqrt(sqr(r) - sqr(d));
+        //printf("> %d %d %.12lf\n", x, y, ang / M_PI * 180);
+        //printf("> %.12lf\n", sin(ang) * x - cos(ang) * y);
+        //printf("> %.12lf\n", sqrt(dist_sqr(x, y) - sqr(d)) - l);
         ans = std::min(ans, sqrt(dist_sqr(x, y) - sqr(d)) - l);
     }
 }
@@ -41,8 +44,12 @@ inline void upd_by_line(double &ans, const double ang,
         if (ang > seg_end + EPS && ang < seg_begin - EPS) return;
     }
     // Equation of line (x1,y1)-(x2,y2)
-    double a = y1 - y2, b = x2 - x1, c = a * x1 + b * y1;
+    double a = y1 - y2, b = x2 - x1, c = -(a * x1 + b * y1);
+    //printf("> (%.2lf,%.2lf) - (%.2lf,%.2lf)\n",
+    //    x1, y1, x2, y2);
+    //printf("> %.2lfx + %.2lfy + %.2lf = 0\n", a, b, c);
     double h = fabs(c) / sqrt(a * a + b * b);
+    //printf("> %.12lf\n", h);
     double h_ang = atan2(y1 - y2, x1 - x2) + M_PI / 2;
     double d = fabs(h / cos(h_ang - ang));
     ans = std::min(ans, d);
@@ -55,13 +62,18 @@ inline double calc(double ang)
         upd_by_circle(ans, ang, cx[i], cy[i], cr[i]);
     for (int i = 0; i < ns; ++i) {
         upd_by_circle(ans, ang, sx1[i], sy1[i], sr[i]);
+    //printf("%.12lf\n", ans);
         upd_by_circle(ans, ang, sx2[i], sy2[i], sr[i]);
+    //printf("%.12lf\n", ans);
         double len = dist(sx1[i] - sx2[i], sy1[i] - sy2[i]);
+    //printf("+ %.12lf\n", len);
+    //printf("+ %.12lf\n", sx1[i] + (double)(sy1[i] - sy2[i]) * sr[i] / len);
         upd_by_line(ans, ang,
             sx1[i] + (double)(sy1[i] - sy2[i]) * sr[i] / len,
             sy1[i] + (double)(sx2[i] - sx1[i]) * sr[i] / len,
             sx2[i] + (double)(sy1[i] - sy2[i]) * sr[i] / len,
             sy2[i] + (double)(sx2[i] - sx1[i]) * sr[i] / len);
+    //printf("%.12lf\n", ans);
     }
     return ans;
 }
@@ -90,6 +102,7 @@ int main()
     for (int i = 0; i < ns; ++i)
         scanf("%d%d%d%d%d", &sx1[i], &sy1[i], &sx2[i], &sy2[i], &sr[i]);
 
+//printf("%.12lf\n", calc(-56.23 / 180 * M_PI));
     double tot_area = simpson(-M_PI, M_PI - EPS, EPS);
     printf("%.12lf\n", tot_area);
 

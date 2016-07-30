@@ -84,9 +84,17 @@ int main(int argc, char *argv[])
         if (idx == last_idx) {
             last_idx = 0;
         }
-        int u = last_idx + rand() % (idx - last_idx);
+        int v = last_idx + rand() % (idx - last_idx);
+        int u = p[v].second;
         sel[u] = true;
-        ang = std::max(ang, get_end(p[u].second));
+        ang = std::max(ang, get_end(u));
+        int i = u;
+        printf("Ang = %lf~%lf\n", p[v].first / M_PI * 180, get_end(u) / M_PI * 180);
+        if (i < MAXN) printf("%d %d %d\n", cx[i] * mul, cy[i] * mul, cr[i] * mul);
+        else printf("%d %d %d %d %d\n",
+            sx1[i - MAXN] * mul, sy1[i - MAXN] * mul,
+            sx2[i - MAXN] * mul, sy2[i - MAXN] * mul, sr[i - MAXN] * mul);
+        puts("====");
         if (idx >= MAXN + MAXN) break;
     }
 
