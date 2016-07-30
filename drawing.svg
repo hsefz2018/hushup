@@ -26,10 +26,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.55"
-     inkscape:cx="120"
+     inkscape:cx="74.225352"
      inkscape:cy="60"
      inkscape:document-units="px"
-     inkscape:current-layer="g4223"
+     inkscape:current-layer="layer1"
      showgrid="false"
      units="px"
      inkscape:window-width="1280"
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -123,6 +123,6 @@
          id="tspan4234"
          x="81.971832"
          y="1048.7002"
-         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:13.75px;font-family:'Source Han Sans';-inkscape-font-specification:'Source Han Sans Light'">高清重置版</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:13.75px;font-family:'Source Han Sans';-inkscape-font-specification:'Source Han Sans Light'">高清重制版</tspan></text>
   </g>
 </svg>
