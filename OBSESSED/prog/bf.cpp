@@ -1,5 +1,5 @@
 #include <cstdio>
-static const int MAXN = 100007;
+static const int MAXN = 300007;
 static const int INF = 0x3fffffff;
 
 int n, m;
@@ -22,6 +22,9 @@ inline int inspect(int l, int r) {
 
 int main()
 {
+    freopen("obsessed.in", "r", stdin);
+    freopen("obsessed.out", "w", stdout);
+
     scanf("%d%d", &n, &m);
 
     char op[16];
@@ -37,6 +40,7 @@ int main()
         }
     }
 
+    fclose(stdin); fclose(stdout);
     return 0;
 }
 
