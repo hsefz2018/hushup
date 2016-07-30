@@ -5,27 +5,16 @@
 #include <algorithm>
 #include <utility>
 
-static const int MAXN = 10000;
-template <typename T> inline T sqr(const T x) { return x * x; }
+static const int MAXN = 50005;
 inline double dist(double x, double y) { return sqrt(x * x + y * y); }
-inline double arc(double alpha, double beta)
-{
-    if (fabs(alpha - beta) < M_PI) return alpha - beta;
-    else return 2 * M_PI + alpha - beta;
-}
 
-int coord_max, mul;
+int coord_max, min_dist, max_radius;
 int ns, nc;
 int cx[MAXN], cy[MAXN], cr[MAXN];
 int sx1[MAXN], sx2[MAXN], sy1[MAXN], sy2[MAXN], sr[MAXN];
-double cd[MAXN], sd1[MAXN], sd2[MAXN];
-double cbegin[MAXN], cend[MAXN], sbegin[MAXN], send[MAXN];
-std::pair<double, int> p[MAXN + MAXN];
+double begin[MAXN + MAXN], end[MAXN + MAXN];
 bool sel[MAXN + MAXN] = { false };
 
-inline double get_end(int idx) {
-    if (idx < MAXN) return cend[idx]; else return send[idx - MAXN];
-}
 inline double orig_to_line(double x1, double y1, double x2, double y2) {
     // Equation of line (x1,y1)-(x2,y2)
     double a = y1 - y2, b = x2 - x1, c = a * x1 + b * y1;
@@ -40,62 +29,41 @@ int main(int argc, char *argv[])
     srand(seed);
     fprintf(stderr, "Seed: %u\n", seed);
 
-    scanf("%d%d%d%d", &coord_max, &mul, &ns, &nc);
+    scanf("%d%d%d%d%d", &coord_max, &min_dist, &max_radius, &ns, &nc);
+    double d1, d2, d3;
     for (int i = 0; i < MAXN; ++i) {
-        cx[i] = rand() % (coord_max * 2 + 1) - coord_max;
-        cy[i] = rand() % (coord_max * 2 + 1) - coord_max;
-        cd[i] = dist(cx[i], cy[i]);
-        if (cd[i] <= 1) { cbegin[i] = NAN; continue; }
-        cr[i] = rand() % (int)(cd[i] - 1e-6) + 1;
+        do {
+            cx[i] = rand() % (coord_max * 2 + 1) - coord_max;
+            cy[i] = rand() % (coord_max * 2 + 1) - coord_max;
+            d1 = dist(cx[i], cy[i]);
+        } while (d1 <= min_dist);
+        cr[i] = rand() % std::min(max_radius, (int)(d1 - 1e-6)) + 1;
         double cen = atan2(cy[i], cx[i]);
-        double wid = asin((double)cr[i] / cd[i]);
-        cbegin[i] = cen - wid;
-        cend[i] = cen + wid;
+        double wid = asin((double)cr[i] / d1);
+        begin[i] = cen - wid;
+        end[i] = cen + wid;
     }
     for (int i = 0; i < MAXN; ++i) {
-        sx1[i] = rand() % (coord_max * 2 + 1) - coord_max;
-        sy1[i] = rand() % (coord_max * 2 + 1) - coord_max;
-        sx2[i] = rand() % (coord_max * 2 + 1) - coord_max;
-        sy2[i] = rand() % (coord_max * 2 + 1) - coord_max;
-        if (sx1[i] * sy2[i] - sx2[i] * sy1[i] < 0) {
-            std::swap(sx1[i], sx2[i]);
-            std::swap(sy1[i], sy2[i]);
-        }
-        sd1[i] = dist(sx1[i], sy1[i]);
-        sd2[i] = dist(sx2[i], sy2[i]);
-        double dis = orig_to_line(sx1[i], sy1[i], sx2[i], sy2[i]);
-        if (std::min(sd1[i], sd2[i]) <= 1 || dis <= 1) { sbegin[i] = NAN; continue; }
-        sr[i] = rand() % (int)(dis - 1e-6) + 1;
-        sbegin[i] = atan2(sy1[i], sx1[i]) - asin((double)sr[i] / sd1[i]);
-        send[i] = atan2(sy2[i], sx2[i]) - asin((double)sr[i] / sd2[i]);
-    }
-
-    for (int i = 0; i < MAXN; ++i) p[i].first = isnan(cbegin[i]) ? -1e8 : cbegin[i];
-    for (int i = 0; i < MAXN; ++i) p[i + MAXN].first = isnan(sbegin[i]) ? -1e8 : sbegin[i];
-    for (int i = 0; i < MAXN * 2; ++i) p[i].second = i;
-    std::sort(p, p + MAXN + MAXN);
-
-    double ang = -M_PI;
-    int idx = 0, last_idx;
-    while (idx < MAXN + MAXN && p[idx].first == -1e8) ++idx;
-    while (ang <= M_PI && idx < MAXN + MAXN) {
-        last_idx = idx;
-        while (idx < MAXN + MAXN && p[idx].first < ang) ++idx;
-        if (idx == last_idx) {
-            last_idx = 0;
-        }
-        int v = last_idx + rand() % (idx - last_idx);
-        int u = p[v].second;
-        sel[u] = true;
-        ang = std::max(ang, get_end(u));
-        int i = u;
-        printf("Ang = %lf~%lf\n", p[v].first / M_PI * 180, get_end(u) / M_PI * 180);
-        if (i < MAXN) printf("%d %d %d\n", cx[i] * mul, cy[i] * mul, cr[i] * mul);
-        else printf("%d %d %d %d %d\n",
-            sx1[i - MAXN] * mul, sy1[i - MAXN] * mul,
-            sx2[i - MAXN] * mul, sy2[i - MAXN] * mul, sr[i - MAXN] * mul);
-        puts("====");
-        if (idx >= MAXN + MAXN) break;
+        do {
+            sx1[i] = rand() % (coord_max * 2 + 1) - coord_max;
+            sy1[i] = rand() % (coord_max * 2 + 1) - coord_max;
+            sx2[i] = rand() % (coord_max * 2 + 1) - coord_max;
+            sy2[i] = rand() % (coord_max * 2 + 1) - coord_max;
+            if (sx1[i] * sy2[i] - sx2[i] * sy1[i] < 0) {
+                std::swap(sx1[i], sx2[i]);
+                std::swap(sy1[i], sy2[i]);
+            }
+            while (dist(sx1[i] - sx2[i], sy1[i] - sy2[i]) > max_radius * 4) {
+                sx2[i] = sx1[i] + (sx2[i] - sx1[i]) / 2;
+                sy2[i] = sy1[i] + (sy2[i] - sy1[i]) / 2;
+            }
+            d1 = dist(sx1[i], sy1[i]);
+            d2 = dist(sx2[i], sy2[i]);
+            d3 = orig_to_line(sx1[i], sy1[i], sx2[i], sy2[i]);
+        } while (d3 <= min_dist);
+        sr[i] = rand() % std::min(max_radius, (int)(d3 - 1e-6)) + 1;
+        begin[i + MAXN] = atan2(sy1[i], sx1[i]) - asin((double)sr[i] / d1);
+        end[i + MAXN] = atan2(sy2[i], sx2[i]) - asin((double)sr[i] / d2);
     }
 
     int real_nc = 0, real_ns = 0;
@@ -114,10 +82,10 @@ int main(int argc, char *argv[])
 
     printf("%d %d\n", real_nc, real_ns);
     for (int i = 0; i < MAXN + MAXN; ++i) if (sel[i]) {
-        if (i < MAXN) printf("%d %d %d\n", cx[i] * mul, cy[i] * mul, cr[i] * mul);
+        if (i < MAXN) printf("%d %d %d\n", cx[i], cy[i], cr[i]);
         else printf("%d %d %d %d %d\n",
-            sx1[i - MAXN] * mul, sy1[i - MAXN] * mul,
-            sx2[i - MAXN] * mul, sy2[i - MAXN] * mul, sr[i - MAXN] * mul);
+            sx1[i - MAXN], sy1[i - MAXN],
+            sx2[i - MAXN], sy2[i - MAXN], sr[i - MAXN]);
     }
 
     return 0;
