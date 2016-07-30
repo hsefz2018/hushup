@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             sy1[i] = rand() % (coord_max * 2 + 1) - coord_max;
             sx2[i] = rand() % (coord_max * 2 + 1) - coord_max;
             sy2[i] = rand() % (coord_max * 2 + 1) - coord_max;
-            if (sx1[i] * sy2[i] - sx2[i] * sy1[i] < 0) {
+            if ((long long)sx1[i] * sy2[i] - (long long)sx2[i] * sy1[i] < 0) {
                 std::swap(sx1[i], sx2[i]);
                 std::swap(sy1[i], sy2[i]);
             }

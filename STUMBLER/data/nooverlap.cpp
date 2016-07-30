@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <utility>
 
-static const int MAXN = 50005;
+static const int MAXN = 150005;
 inline double dist(double x, double y) { return sqrt(x * x + y * y); }
 
 int coord_max, min_dist, max_radius;
@@ -24,7 +24,28 @@ inline double orig_to_line(double x1, double y1, double x2, double y2) {
     return fabs(a + b + c) / sqrt(a * a + b * b);
 }
 
-inline bool diff_lt3(const double &a, const double &b) { return fabs(a - b) < 3; }
+inline bool diff_nbr(const double &a, const double &b) { return fabs(a - b) < 10; }
+
+inline void gen_circle_in_range(const double l, const double r, int &x, int &y, int &radius) {
+    static double ang, d1, begin, end, ll, rr, wid, cen;
+    static int d_min;
+    // printf("< %.2lf %.2lf\n", l, r);
+    do {
+        radius = rand() % max_radius + 1;
+        d_min = std::max(radius, std::max(min_dist, (int)ceil(radius / tan((r - l) / 2))));
+        d1 = d_min + (double)rand() / RAND_MAX * (coord_max - d_min);
+        wid = asin((double)radius / d1);
+        ll = l + wid, rr = r - wid;
+        ang = ll + (double)rand() / RAND_MAX * (rr - ll);
+        x = (int)round(cos(ang) * d1);
+        y = (int)round(sin(ang) * d1);
+        d1 = dist(x, y);
+        cen = atan2(y, x);
+        begin = cen - wid;
+        end = cen + wid;
+    } while (begin < l || end > r);
+    // printf("> %d %d %d | %.2lf %.2lf\n", x, y, radius, begin, end);
+}
 
 int main(int argc, char *argv[])
 {
@@ -40,7 +61,7 @@ int main(int argc, char *argv[])
     for (int i = 1; i < ns + nc; ++i)
         slice[i] = rand() % 1048576;
     std::sort(slice, slice + ns + nc);
-    int top = std::unique(slice, slice + ns + nc, diff_lt3) - &slice[0];
+    int top = std::unique(slice, slice + ns + nc, diff_nbr) - &slice[0];
     slice[top] = M_PI;
     for (int i = 0; i < top; ++i) {
         slice[i] = -M_PI + (double)(slice[i] + 1) / 1048577 * 2 * M_PI;
@@ -53,52 +74,24 @@ int main(int argc, char *argv[])
     for (int i = 0; i < top; ++i) slice_idx[i] = i;
     std::random_shuffle(slice_idx, slice_idx + top);
 
-    double ang;
-    double d1, d2, d3;
+    double ang, l, r;
     for (int i = 0; i < real_nc; ++i) {
-        // printf("%.2lf %.2lf\n", slice[slice_idx[i]], slice[slice_idx[i] + 1]);
-        do {
-            ang = slice[slice_idx[i]] +
-                (double)rand() / RAND_MAX * (slice[slice_idx[i] + 1] - slice[slice_idx[i]]);
-            d1 = min_dist + (double)rand() / RAND_MAX * (coord_max - min_dist);
-            cx[i] = (int)round(cos(ang) * d1);
-            cy[i] = (int)round(sin(ang) * d1);
-            d1 = dist(cx[i], cy[i]);
-            cr[i] = rand() % std::min(max_radius, (int)(d1 - 1e-6)) + 1;
-            double cen = atan2(cy[i], cx[i]);
-            double wid = asin((double)cr[i] / d1);
-            begin[i] = cen - wid;
-            end[i] = cen + wid;
-        } while (begin[i] < slice[slice_idx[i]] || end[i] > slice[slice_idx[i] + 1]);
+        l = slice[slice_idx[i]];
+        r = slice[slice_idx[i] + 1];
+        gen_circle_in_range(l, r, cx[i], cy[i], cr[i]);
+        // if (i % 100 == 0) fprintf(stderr, "# %d\n", i);
     }
+    int r1, r2;
     for (int i = 0; i < real_ns; ++i) {
-        do {
-            ang = slice[slice_idx[i + real_nc]] +
-                (double)rand() / RAND_MAX * (slice[slice_idx[i + real_nc] + 1] - slice[slice_idx[i + real_nc]]);
-            d1 = min_dist + (double)rand() / RAND_MAX * (coord_max - min_dist);
-            sx1[i] = (int)round(cos(ang) * d1);
-            sy1[i] = (int)round(sin(ang) * d1);
-            d1 = dist(sx1[i], sy1[i]);
-            ang = slice[slice_idx[i + real_nc]] +
-                (double)rand() / RAND_MAX * (slice[slice_idx[i + real_nc] + 1] - slice[slice_idx[i + real_nc]]);
-            d2 = min_dist + (double)rand() / RAND_MAX * (coord_max - min_dist);
-            sx2[i] = (int)round(cos(ang) * d2);
-            sy2[i] = (int)round(sin(ang) * d2);
-            d2 = dist(sx2[i], sy2[i]);
-            if (sx1[i] * sy2[i] - sx2[i] * sy1[i] < 0) {
-                std::swap(sx1[i], sx2[i]);
-                std::swap(sy1[i], sy2[i]);
-            }
-            while (dist(sx1[i] - sx2[i], sy1[i] - sy2[i]) > max_radius * 4) {
-                sx2[i] = sx1[i] + (sx2[i] - sx1[i]) / 2;
-                sy2[i] = sy1[i] + (sy2[i] - sy1[i]) / 2;
-            }
-            d3 = orig_to_line(sx1[i], sy1[i], sx2[i], sy2[i]);
-            sr[i] = rand() % std::min(max_radius, (int)(d3 - 1e-6)) + 1;
-            begin[i + MAXN] = atan2(sy1[i], sx1[i]) - asin((double)sr[i] / d1);
-            end[i + MAXN] = atan2(sy2[i], sx2[i]) - asin((double)sr[i] / d2);
-        } while (d3 <= min_dist || begin[i + MAXN] < slice[slice_idx[i + real_nc]] ||
-            end[i + MAXN] > slice[slice_idx[i + real_nc] + 1]);
+        l = slice[slice_idx[i + real_nc]];
+        r = slice[slice_idx[i + real_nc] + 1];
+        gen_circle_in_range(l, r, sx1[i], sy1[i], r1);
+        gen_circle_in_range(l, r, sx2[i], sy2[i], r2);
+        sr[i] = std::min(r1, r2);
+        if ((long long)sx1[i] * sy2[i] - (long long)sx2[i] * sy1[i] < 0) {
+            std::swap(sx1[i], sx2[i]);
+            std::swap(sy1[i], sy2[i]);
+        }
     }
 
     printf("%d %d\n", real_nc, real_ns);
