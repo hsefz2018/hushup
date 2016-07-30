@@ -26,11 +26,6 @@ bool sel[MAXN + MAXN] = { false };
 inline double get_end(int idx) {
     if (idx < MAXN) return cend[idx]; else return send[idx - MAXN];
 }
-inline double orig_to_line(double x1, double y1, double x2, double y2) {
-    // Equation of line (x1,y1)-(x2,y2)
-    double a = y1 - y2, b = x2 - x1, c = a * x1 + b * y1;
-    return fabs(a + b + c) / sqrt(a * a + b * b);
-}
 
 int main(int argc, char *argv[])
 {
@@ -63,9 +58,8 @@ int main(int argc, char *argv[])
         }
         sd1[i] = dist(sx1[i], sy1[i]);
         sd2[i] = dist(sx2[i], sy2[i]);
-        double dis = orig_to_line(sx1[i], sy1[i], sx2[i], sy2[i]);
-        if (std::min(sd1[i], sd2[i]) <= 1 || dis <= 1) { sbegin[i] = NAN; continue; }
-        sr[i] = rand() % (int)(dis - 1e-6) + 1;
+        if (std::min(sd1[i], sd2[i]) <= 1) { sbegin[i] = NAN; continue; }
+        sr[i] = rand() % (int)(std::min(sd1[i], sd2[i]) - 1e-6) + 1;
         sbegin[i] = atan2(sy1[i], sx1[i]) - asin((double)sr[i] / sd1[i]);
         send[i] = atan2(sy2[i], sx2[i]) - asin((double)sr[i] / sd2[i]);
     }
@@ -75,19 +69,21 @@ int main(int argc, char *argv[])
     for (int i = 0; i < MAXN * 2; ++i) p[i].second = i;
     std::sort(p, p + MAXN + MAXN);
 
-    double ang = -M_PI;
-    int idx = 0, last_idx;
+    double ang = -M_PI, furthest;
+    int idx = 0, furthest_idx;
     while (idx < MAXN + MAXN && p[idx].first == -1e8) ++idx;
     while (ang <= M_PI && idx < MAXN + MAXN) {
-        printf("%d\n", idx); fflush(stdout);
-        last_idx = idx;
-        while (idx < MAXN + MAXN && p[idx].first < ang) ++idx;
-        if (idx == last_idx) {
-            last_idx = 0;
+        furthest = -M_PI * 1000;
+        furthest_idx = -1;
+        while (idx < MAXN + MAXN && p[idx].first < ang) {
+            if (furthest < p[idx].first + get_end(p[idx].second)) {
+                furthest = p[idx].first + get_end(p[idx].second);
+                furthest_idx = p[idx].second;
+            }
+            ++idx;
         }
-        int u = last_idx + rand() % (idx - last_idx);
-        sel[u] = true;
-        ang = std::max(ang, get_end(p[u].second));
+        if (furthest_idx != -1) sel[furthest_idx] = true;
+        ang = furthest;
         if (idx >= MAXN + MAXN) break;
     }
 
