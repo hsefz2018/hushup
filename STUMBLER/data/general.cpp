@@ -14,7 +14,7 @@ inline double arc(double alpha, double beta)
     else return 2 * M_PI + alpha - beta;
 }
 
-int coord_max;
+int coord_max, mul;
 int ns, nc;
 int cx[MAXN], cy[MAXN], cr[MAXN];
 int sx1[MAXN], sx2[MAXN], sy1[MAXN], sy2[MAXN], sr[MAXN];
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     srand(seed);
     fprintf(stderr, "Seed: %u\n", seed);
 
-    scanf("%d%d%d", &coord_max, &ns, &nc);
+    scanf("%d%d%d%d", &coord_max, &mul, &ns, &nc);
     for (int i = 0; i < MAXN; ++i) {
         cx[i] = rand() % (coord_max * 2 + 1) - coord_max;
         cy[i] = rand() % (coord_max * 2 + 1) - coord_max;
@@ -79,7 +79,6 @@ int main(int argc, char *argv[])
     int idx = 0, last_idx;
     while (idx < MAXN + MAXN && p[idx].first == -1e8) ++idx;
     while (ang <= M_PI && idx < MAXN + MAXN) {
-        printf("%d\n", idx); fflush(stdout);
         last_idx = idx;
         while (idx < MAXN + MAXN && p[idx].first < ang) ++idx;
         if (idx == last_idx) {
@@ -107,9 +106,10 @@ int main(int argc, char *argv[])
 
     printf("%d %d\n", real_nc, real_ns);
     for (int i = 0; i < MAXN + MAXN; ++i) if (sel[i]) {
-        if (i < MAXN) printf("%d %d %d\n", cx[i], cy[i], cr[i]);
+        if (i < MAXN) printf("%d %d %d\n", cx[i] * mul, cy[i] * mul, cr[i] * mul);
         else printf("%d %d %d %d %d\n",
-            sx1[i - MAXN], sy1[i - MAXN], sx2[i - MAXN], sy2[i - MAXN], sr[i - MAXN]);
+            sx1[i - MAXN] * mul, sy1[i - MAXN] * mul,
+            sx2[i - MAXN] * mul, sy2[i - MAXN] * mul, sr[i - MAXN] * mul);
     }
 
     return 0;
