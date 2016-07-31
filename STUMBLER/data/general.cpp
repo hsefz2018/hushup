@@ -21,6 +21,13 @@ inline double orig_to_line(double x1, double y1, double x2, double y2) {
     return fabs(a + b + c) / sqrt(a * a + b * b);
 }
 
+inline double rand_distribute() {
+    double r = (double)rand() / RAND_MAX;
+    if (r < 0.5) r *= (r * r);
+    else r = (1.0 - r) * (1.0 - r) * (1.0 - r);
+    return r;
+}
+
 int main(int argc, char *argv[])
 {
     unsigned int seed = 0;
@@ -33,8 +40,8 @@ int main(int argc, char *argv[])
     double d1, d2, d3;
     for (int i = 0; i < MAXN; ++i) {
         do {
-            cx[i] = rand() % (coord_max * 2 + 1) - coord_max;
-            cy[i] = rand() % (coord_max * 2 + 1) - coord_max;
+            cx[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
+            cy[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
             d1 = dist(cx[i], cy[i]);
         } while (d1 <= min_dist);
         cr[i] = rand() % std::min(max_radius, (int)(d1 - 1e-6)) + 1;
@@ -45,10 +52,10 @@ int main(int argc, char *argv[])
     }
     for (int i = 0; i < MAXN; ++i) {
         do {
-            sx1[i] = rand() % (coord_max * 2 + 1) - coord_max;
-            sy1[i] = rand() % (coord_max * 2 + 1) - coord_max;
-            sx2[i] = rand() % (coord_max * 2 + 1) - coord_max;
-            sy2[i] = rand() % (coord_max * 2 + 1) - coord_max;
+            sx1[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
+            sy2[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
+            sx1[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
+            sy2[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
             if ((long long)sx1[i] * sy2[i] - (long long)sx2[i] * sy1[i] < 0) {
                 std::swap(sx1[i], sx2[i]);
                 std::swap(sy1[i], sy2[i]);

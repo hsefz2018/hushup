@@ -77,8 +77,7 @@ int main(int argc, char *argv[])
     }
     for (int i = 0; i < ns; ++i) {
         printf("%d %d %d %d %d\n",
-            sx1[i - MAXN], sy1[i - MAXN],
-            sx2[i - MAXN], sy2[i - MAXN], sr[i - MAXN]);
+            sx1[i], sy1[i], sx2[i], sy2[i], sr[i]);
     }
 
     return 0;
