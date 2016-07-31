@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     srand(seed);
     fprintf(stderr, "Seed: %u\n", seed);
 
-    scanf("%d%d%d%d%d", &coord_max, &min_dist, &max_radius, &ns, &nc);
+    scanf("%d%d%d%d%d", &coord_max, &min_dist, &max_radius, &nc, &ns);
     double d1, d2, d3;
     for (int i = 0; i < MAXN; ++i) {
         do {
