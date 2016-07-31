@@ -16,6 +16,9 @@ inline void add_range(const double a, const double b) {
 
 int main()
 {
+    freopen("stumbler.in", "r", stdin);
+    freopen("stumbler.out", "w", stdout);
+
     scanf("%d%d", &nc, &ns);
     int x1, y1, x2, y2, r;
     for (int i = 0; i < nc; ++i) {
@@ -33,6 +36,7 @@ int main()
 
     printf("%.12lf\n", ans / (2 * M_PI));
 
+    fclose(stdin); fclose(stdout);
     return 0;
 }
 

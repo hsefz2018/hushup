@@ -33,6 +33,9 @@ inline void add_range(const double a, const double b) {
 
 int main()
 {
+    freopen("stumbler.in", "r", stdin);
+    freopen("stumbler.out", "w", stdout);
+
     scanf("%d%d", &nc, &ns);
     int x1, y1, x2, y2, r;
     for (int i = 0; i < nc; ++i) {
@@ -49,8 +52,6 @@ int main()
     }
 
     std::sort(p, p + ct);
-    // for (int i = 0; i < ct; ++i)
-    //     printf("%.2lf %.2lf\n", p[i].first / M_PI * 180, p[i].second / M_PI * 180);
     int cur_layers = 0;
     double last_ang = -M_PI * 2333;
     double ans = 0.0;
@@ -58,11 +59,10 @@ int main()
         if (cur_layers == 1) ans += (p[i].first - last_ang);
         cur_layers += p[i].second;
         last_ang = p[i].first;
-        //printf("%.2lf %d | %.2lf\n",
-        //    p[i].first / M_PI * 180, p[i].second, ans / M_PI * 180);
     }
     printf("%.12lf\n", ans / (2 * M_PI));
 
+    fclose(stdin); fclose(stdout);
     return 0;
 }
 
