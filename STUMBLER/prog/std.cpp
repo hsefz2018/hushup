@@ -12,6 +12,12 @@ int nc, ns;
 std::pair<double, char> p[MAXN];
 int ct = 0;
 
+inline double get_range(const double a, const double b) {
+    if (a > b) {
+        if (2 * M_PI - (b - a) < M_PI) return 2 * M_PI - (b - a);
+        else return -1;
+    } else return (b - a);
+}
 inline void add_events(const double a, const double b) {
     p[ct++] = std::make_pair(a, +1);
     p[ct++] = std::make_pair(b, -1);
@@ -47,8 +53,15 @@ int main()
     for (int i = 0; i < ns; ++i) {
         scanf("%d%d%d%d%d", &x1, &y1, &x2, &y2, &r);
         double a1 = atan2(y1, x1) - asin((double)r / dist(x1, y1));
-        double a2 = atan2(y2, x2) + asin((double)r / dist(x2, y2));
-        add_range(a1, a2);
+        double a2 = atan2(y1, x1) + asin((double)r / dist(x1, y1));
+        double a3 = atan2(y2, x2) - asin((double)r / dist(x2, y2));
+        double a4 = atan2(y2, x2) + asin((double)r / dist(x2, y2));
+        std::pair<double, int> p = std::make_pair(get_range(a1, a2), 1);
+        p = std::max(p, std::make_pair(get_range(a3, a4), 2));
+        p = std::max(p, std::make_pair(get_range(a1, a4), 3));
+        if (p.second == 1) add_range(a1, a2);
+        else if (p.second == 2) add_range(a3, a4);
+        else add_range(a1, a4);
     }
 
     std::sort(p, p + ct);
