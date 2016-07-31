@@ -94,12 +94,13 @@ int main(int argc, char *argv[])
         }
     }
 
+    // Flip. Get something go across the +/-PI ray.
     printf("%d %d\n", real_nc, real_ns);
     for (int i = 0; i < real_nc; ++i) {
-        printf("%d %d %d\n", cx[i], cy[i], cr[i]);
+        printf("%d %d %d\n", cy[i], cx[i], cr[i]);
     }
     for (int i = 0; i < real_ns; ++i) {
-        printf("%d %d %d %d %d\n", sx1[i], sy1[i], sx2[i], sy2[i], sr[i]);
+        printf("%d %d %d %d %d\n", sy1[i], sx1[i], sy2[i], sx2[i], sr[i]);
     }
 
     return 0;
