@@ -113,7 +113,7 @@
 
 \begin{itemize}
     \pause \item 按照上述方法计算出每个物件影响角度的区间，记录端点（线？←\_←）并排序
-    \pause \item 跨过 \pm \pi 的位置拆分为两个区间
+    \pause \item 跨过 $\pm \pi$ 的位置拆分为两个区间
     \pause \item 枚举两个相邻端点，检查它们所夹区间是否被恰好一个物件覆盖
     \pause \item 排序 $O(N^2)$，枚举共 $O(N)$ 个区间，检查一次 $O(N)$
     \item 总时间复杂度 $O(N^2)$
@@ -147,6 +147,48 @@
 当前覆盖层数，判断层数 = 1 时增加答案。（常用 trick）
 
 时间复杂度 $O(N \log N) + O(N) = O(N \log N)$
+
+\end{frame}
+
+
+\begin{frame}{Problem 2. OBSESSED}
+
+给定一个序列，每个位置上为“空”、“面”音符与“边”音符中的一种。
+
+进行下列操作：
+\begin{itemize}
+    \item 放置“面”或“边”音符；
+    \item 询问一段连续区间内最近一对相同音符（“面”或“边”）之间的最小距离。
+\end{itemize}
+
+$N, M \leq 300\,000$
+
+\end{frame}
+
+\begin{frame}{Algorithm 1}
+
+子任务 1、2：$N \cdot M \leq 600\,000$
+
+直接模拟即可。注意反转操作的判定\newline\newline
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+    \IF {$A[i] == \mathrm{DON}$}
+        \STATE $A[i] := \mathrm{KAT}$
+    \ELSE \STATE $A[i] := \mathrm{DON}$
+    \ENDIF
+\end{algorithmic}
+\caption{ \includegraphics[scale=0.2]{zz.jpg}}
+\label{alg:seq}
+\end{algorithm}
+
+\end{frame}
+
+\begin{frame}{Algorithm 2}
+
+子任务 3：没有“边”音符和反转操作，放置音符的位置严格单调递增
+
+？？？？
 
 \end{frame}
 
