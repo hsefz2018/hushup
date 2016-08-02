@@ -5,7 +5,7 @@
 
 \usepackage[english]{babel}
 \usepackage{ctex}
-\usepackage{algorithm,algorithmic}
+\usepackage{algorithm,algorithmicx,algpseudocode}
 \usepackage{tabularx}
 \usepackage{graphicx}
 \graphicspath{ {img/} }
@@ -173,10 +173,11 @@ $N, M \leq 300\,000$
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-    \IF {$A[i] == \mathrm{DON}$}
-        \STATE $A[i] := \mathrm{KAT}$
-    \ELSE \STATE $A[i] := \mathrm{DON}$
-    \ENDIF
+    \If {$A[i] = \mathrm{DON}$}
+        \State $A[i] \gets \mathrm{KAT}$
+    \Else
+        \State $A[i] \gets \mathrm{DON}$
+    \EndIf
 \end{algorithmic}
 \caption{ \includegraphics[scale=0.2]{zz.jpg}}
 \label{alg:seq}
@@ -188,7 +189,123 @@ $N, M \leq 300\,000$
 
 子任务 3：没有“边”音符和反转操作，放置音符的位置严格单调递增
 
-？？？？
+\begin{figure}[h]\centering
+\includegraphics[scale=0.4]{b1.png}
+\end{figure}
+
+\begin{itemize}
+    \pause \item 找出对应的音符范围：二分查找，$O(\log N)$
+    \pause \item 在范围内查询最小值：Range Minimum Query，线段树 $O(\log N)$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Algorithm 3}
+
+子任务 4：存在两种音符，没有反转操作 \newline\newline
+
+看着好像线段树的样子
+
+\end{frame}
+
+\begin{frame}{Algorithm 3}
+
+对于一个线段树的节点而言，需要考虑的情况有以下三种：
+\begin{itemize}
+    \item 完全在左子节点的区间中；
+    \item 完全在右子节点的区间中；
+    \item 跨越左右子节点区间的交界处。
+\end{itemize}
+
+\pause
+为了实现两段区间信息的合并，需要在每个节点上记录……？
+
+\pause
+\textbf{最左/最右的鼓面/鼓边音符}共 4 条信息。\\
+另外自己内部的最优答案也要记录。
+
+\end{frame}
+
+\begin{frame}{Updating Segment Tree Nodes}
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+    \Function {Update}{$node$}
+        \If {$node.lch = -1$} \State \Return \EndIf
+        \State $node.lmost\_don = \min(node.lch.lmost\_don, node.rch.lmost\_don)$
+        \State $node.rmost\_don = \min(node.lch.rmost\_don, node.rch.rmost\_don)$
+        \State $node.lmost\_kat = \min(node.lch.lmost\_don, node.rch.lmost\_kat)$
+        \State $node.rmost\_kat = \min(node.lch.rmost\_don, node.rch.rmost\_kat)$
+        \State $node.ans = \min(node.lch.ans, node.rch.ans)$
+        \State $node.ans = \min(node.ans, node.rch.lmost\_don - node.lch.rmost\_don)$
+        \State $node.ans = \min(node.ans, node.rch.lmost\_kat - node.lch.rmost\_kat)$
+    \EndFunction
+\end{algorithmic}
+\caption{}
+\label{alg:seq}
+\end{algorithm}
+
+\end{frame}
+
+\begin{frame}{Algorithm 3}
+
+时间复杂度 $O(M \log N)$。
+
+\end{frame}
+
+\begin{frame}{Algorithm 4}
+
+子任务 5：存在两种音符和反转操作 \newline\newline
+
+看着好像线段树的样子
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.5]{xx.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Algorithm 4}
+
+\textbf{延迟标记/懒标记}
+
+每个节点除了记录上述信息外，额外记录一个布尔变量 $tag$%
+表示该节点下所有的音符是否被 Invert
+
+维持 $lmost, rmost$ 与 $tag$ 同步更新（即 $lmost, rmost$%
+记录的是 $tag$ 生效后的值）。访问到一个节点时，若该节点的%
+$tag$ 为真，那么将 $tag$ 下传到左右子节点并更新各自信息。
+
+\end{frame}
+
+\begin{frame}{Handling Lazy Tag Propagation}
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+    \Function {PushDown}{$node$}
+        \If {$node.lch = -1$ \textbf{or} $node.tag = $ \textbf{false}}
+            \State \Return
+        \EndIf
+        \State $node.tag \gets$ \textbf{false}
+        \State $node.lch.tag \gets$ \textbf{not} $node.lch.tag$
+        \State $node.rch.tag \gets$ \textbf{not} $node.rch.tag$
+        \State \Call{Swap}{$node.lch.lmost\_don, node.lch.lmost\_kat$}
+        \State \Call{Swap}{$node.lch.rmost\_don, node.lch.rmost\_kat$}
+        \State \Call{Swap}{$node.rch.lmost\_don, node.rch.lmost\_kat$}
+        \State \Call{Swap}{$node.rch.rmost\_don, node.rch.rmost\_kat$}
+    \EndFunction
+\end{algorithmic}
+\caption{}
+\label{alg:seq}
+\end{algorithm}
+
+\end{frame}
+
+\begin{frame}{Algorithm 4}
+
+时间复杂度 $O(M \log N)$。
+
+具体细节参见参考程序或者两段伪代码。
 
 \end{frame}
 
