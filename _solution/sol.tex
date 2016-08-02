@@ -391,5 +391,153 @@ $tag$ 为真，那么将 $tag$ 下传到左右子节点并更新各自信息。
 
 \end{frame}
 
+\begin{frame}{吐槽时间}
+\end{frame}
+
+\begin{frame}{Algorithm 7}
+
+首先我们需要知道 $L = 11$ 是哪里来的……
+
+\pause （知道了不就会做了？
+\pause （并不
+
+\end{frame}
+
+\begin{frame}{Entropy}
+
+\xout{以下内容均为口胡}
+
+在信息论中，熵是接收的每条消息中包含的信息的平均量，%
+可以理解为不确定性的量度。
+
+简单的解释：有 $N$ 个互斥事件，其中第 $i$ 个事件 $x_i$ 发生的概率为 $P(x_i)$，
+且它们是 collectively exhaustive events 即 $\sum P(x_i) = 1$，那么该体系的熵等于
+
+$$
+    H(X) = -\sum_{i} P(x_i) \log_2 P(x_i)
+$$
+
+例如抛一枚硬币事件的熵为 1（提供了 1 bit 的信息），%
+掷一次骰子事件的熵为 $-6 \cdot \frac{1}{6} \log_2 \frac{1}{6} \approx 2.6$。
+
+\end{frame}
+
+\begin{frame}{Entropy}
+
+$$
+    H(X) = -\sum_{i} P(x_i) \log_2 P(x_i)
+$$
+
+\begin{itemize}
+    \item \xout{萌萌哒的}华二气象台认为某天的降水概率是 50\%，当天下雨
+    \item \xout{萌萌哒的}华二气象台认为某天的降水概率是 99.99\%，当天下雨
+\end{itemize}
+
+\pause
+第一种情况：降水这一事件提供了 $1$ bit 信息\\
+第二种情况：降水这一事件提供了 $1.47 \times 10^{-3}$ bits 信息 \newline\newline
+
+信息来源的熵越大，一条消息包含的信息量也就越大。
+
+\end{frame}
+
+\begin{frame}{Entropy}
+
+在假设每个文字出现在文本中的概率相同的情况下：
+\begin{itemize}
+    \item 英文字母的熵约为 4.7（实际占用 8 bits，58.8\%）
+    \item 日文平假名的熵约为 5.64（实际占用 8 bits，70.5\%）
+    \item 汉字的熵约为 11.3（实际占用 16 bits，70.6\%）
+\end{itemize}
+\pause
+\begin{figure}[h]\centering
+\includegraphics[scale=0.028]{uu.jpg}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Algorithm 7}
+
+回到本题，一次询问的结果有 00、01、……、40、41、50 共 21 种。
+
+\pause
+第一次询问时可以将答案视为随机，因此每个结果发生的概率 = %
+所有五字母的排列中能产生该结果的排列数量/所有这样的排列数量。
+
+\pause
+可以得到，第一次询问作为一个信息源，它的熵大约为 2.289。%
+也就是说，第一次询问可以得到 2.289 bits 的信息。
+
+事(cai)实(ce)上如果采取最优策略，每一次询问包含的信息量都可以达到 2 bits 左右。
+
+\pause
+确定一个五个不重复字母的排列需要至少 %
+$\log_{2} 26 \times 25 \times 24 \times 23 \times 22 \approx 22.912$ %
+bits 的信息量。因此其理论下界 $L = \left\lfloor \frac{22.9125}{2.289} \right\rfloor = 11$。
+
+\end{frame}
+
+\begin{frame}{Algorithm 7}
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.5]{vv.jpg}
+\end{figure}
+
+然而这道题还是不会做……
+
+\end{frame}
+
+\begin{frame}{Algorithm 7}
+
+知道了下界 11 之后，我们可以枚举每一步的询问，%
+构造出一棵 $(26^5 \times 21)^{11}$ 个节点的树，询问的时候按照答案在上面一步一步走，%
+选择最小的子树进行下一步询问（这样能保证尽快到达叶子节点找到解）就可以了（正经脸 \newline\newline
+
+\pause 期望得分 0 分。
+
+\end{frame}
+
+\begin{frame}{Algorithm 8}
+
+既然样本空间辣么大，随机化应该可以达到不错的效果！
+
+\pause
+建树神马的太麻烦……
+
+维护一个列表，保存满足之前所有询问结果的可能的排列。%
+每次询问过后，扫描列表，去除不满足本次询问结果的元素。
+
+\pause
+随机选择 $C$ 个五个字母的排列作为下一次询问的候选。%
+对于每个候选，随机从上述列表中选择 $T$ 个，在该候选询问上得到结果，%
+并以此近似计算出该询问带来的信息量。
+
+选择 $C$ 个候选中信息量最大的进行询问即可。
+
+\pause
+实现时该列表直接采用数组，取 $C = 4096, T = 768$。在这个数量级上的 %
+$C$ 和 $T$ 值都能在时限内达到很好的成绩。
+
+\end{frame}
+
+\begin{frame}{Algorithm 8}
+
+最坏情况未知，期望单组数据尝试次数约为 12。
+
+实际尝试不同随机种子之后能够做到最大单组数据 11 次询问。
+
+\pause
+std 都有几率不拿蟒分，所以是 Challenge Accepted 啊……
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.5]{zz.jpg}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Acknowledgements}
+
+\end{frame}
+
 \end{document}
 
