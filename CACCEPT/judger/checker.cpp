@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
         for (int i = 0; i < tot_cases; ++i)
             eff_score += min(1.0, 11.0 / atts[i]);
         eff_score /= tot_cases;
-        eff_score *= eff_score;
         double score = 0.2 + 0.8 * eff_score;
         printf("%.3lf", score);
     }

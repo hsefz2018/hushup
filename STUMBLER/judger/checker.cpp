@@ -8,8 +8,8 @@ template <typename T> inline T min(const T a, const T b) {
 
 int main(int argc, char *argv[])
 {
-    FILE *out = fopen(argv[2], "r");
-    FILE *ans = fopen(argv[3], "r");
+    FILE *out = fopen(argv[3], "r");
+    FILE *ans = fopen(argv[2], "r");
 
     double jury_ans, ctst_ans;
     assert(fscanf(ans, "%lf", &jury_ans) == 1);
