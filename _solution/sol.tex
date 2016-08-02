@@ -309,5 +309,87 @@ $tag$ 为真，那么将 $tag$ 下传到左右子节点并更新各自信息。
 
 \end{frame}
 
+\begin{frame}{Problem 3. CACCEPT}
+
+\xout{（其实这就是去年期末的 Hako 窝怎么会说呢）} \newline\newline
+
+交互题。有一个五个不同字母的排列，每次可以询问五个字母（可以重复），得到：
+\begin{itemize}
+    \item 有多少个在答案中位置正确的字母；
+    \item 有多少个不同的在答案中出现但位置不正确的字母。
+\end{itemize}
+
+用最少的询问次数确定字母排列。按照谜之公式给分。
+
+\pause
+评分参数 $L = 11$ \xout{知道泥萌很好奇}
+
+\end{frame}
+
+\begin{frame}{Algorithm 1}
+
+直接提交样例程序，可以卡着时限通过所有 20 组数据。
+
+平均每组数据需要花费上千万次询问，效率得分 $E \approx 0$。\newline\newline
+
+\pause 期望得分 20 分。
+
+\end{frame}
+
+\begin{frame}{Algorithm 2 by wangyurzee}
+
+从“ABCDE”（随机亦可）开始尝试对于每一位进行调整，保留返回值最大的答案。\newline\newline
+
+\pause 最大单次尝试次数 $5 \times 26 = 130$，实际最大单次 116、合计 2320，
+期望得分 25 \textasciitilde 30 分。
+
+\end{frame}
+
+\begin{frame}{Algorithm 3 by wangyurzee}
+
+在算法二的基础上进行特别判断，如果一次调整将返回值增加了 9（完全猜对了一位））%
+那么退出当前位的调整进入下一位。\newline\newline
+
+\pause 最大单次尝试次数仍为 130，实际最大单次 94、合计 1236，
+期望得分 30 \textasciitilde 40 分。
+
+\end{frame}
+
+\begin{frame}{Algorithm 4}
+
+从 A 到 Z 分别重复五遍进行询问（“AAAAA”、“BBBBB”……）找出所有出现的的字母。
+
+枚举五个字母的排列并逐次询问。\newline\newline
+
+\pause 最大单次尝试次数 $26 + 5! = 146$，期望得分 25 \textasciitilde 35 分。
+
+\end{frame}
+
+\begin{frame}{Algorithm 5}
+
+在算法四的基础上，不枚举排列而是枚举 $\binom{5}{2} = 20$ 对元素%
+并尝试交换，保留返回值大的答案。\newline\newline
+
+\pause 最大单次尝试次数 $26 + \binom{5}{2} = 46$，实际最大单次 37、合计 740，
+期望得分 40 \textasciitilde 50 分。
+
+\end{frame}
+
+\begin{frame}{Algorithm 6 by wangyurzee}
+
+在算法五的基础上改进第一部分的找字母过程。
+
+\pause 每次进行形如“ABABA”的询问，其中含有的字母个数有三种情况：
+\begin{itemize}
+    \item 0：直接确定 A、B 均不在答案内出现；
+    \item 2：直接确定 A、B 均在答案内出现；
+    \item 1：进行另一次询问“AAAAA”，确定是 A 还是 B 在答案内出现。
+\end{itemize} 
+
+\pause 最大单次尝试次数 $\frac{26}{2} + 5 + \binom{5}{2} = 38$，实际最大单次 29、合计 509，
+期望得分 50 \textasciitilde 55 分。
+
+\end{frame}
+
 \end{document}
 
