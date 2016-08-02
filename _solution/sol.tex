@@ -13,7 +13,7 @@
 \begin{document}
 
 \title{Hush up! 题目讨论}
-\author{CyanD1317 / Tommyr7 / wangyurzee / JCPWFLOI}
+\author{CyanD1317 / Tommyr7 / wangyurzee}
 \frame{\titlepage}
 
 
@@ -26,6 +26,127 @@
     \item $N_\mathrm{C}, N_\mathrm{S} \leq 50\,000$
     \item 精度 $10^{-6}$
 \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Observations \& Lemmata}
+
+\begin{itemize}
+\item
+    将 $-\pi$ 和 $+\pi$ 看作首尾相接，那么一个物件影响的角度范围是连续的，%
+    且该范围不会大于等于 $\pi$。
+    \begin{itemize}
+        \pause
+        \item Formally：如果射线 $OA$ 与射线 $OB$ 都与物体 $U$ 有公共点，
+            那么在劣角 $AOB$ 内的任意一条射线 $OC$ 都与物体 $U$ 有公共点。
+        \pause
+        \item 显然成立。
+    \end{itemize}
+\pause
+\item
+    在前两个子任务的限制下，物件影响的角度范围没有重叠部分。
+    \begin{itemize}
+        \pause
+        \item 计算出每个物件的影响的范围大小，相加即为答案。
+    \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Algorithm 1}
+
+子任务 1：只有圆形物件，物件影响的角度范围没有重叠部分。
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.48]{a1.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Algorithm 2}
+
+子任务 2：有滑条物件，物件影响的角度范围没有重叠部分。
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.4]{a2.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Algorithm 2}
+
+特殊情况：与上一种取 max
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.4]{a3.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Algorithm 3}
+
+子任务 3：$N_\mathrm{C}, N_\mathrm{S} \leq 1\,000$ \newline
+
+不会做，输出 QAQ
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.5]{xx.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Algorithm 4}
+
+子任务 4：存在一条从原点出发的射线与每一个打击物件都有公共点。
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.4]{a4.png}
+\end{figure}
+
+
+
+\end{frame}
+
+\begin{frame}{Algorithm 5}
+
+子任务 3：$N_\mathrm{C}, N_\mathrm{S} \leq 1\,000$ \newline
+
+\begin{itemize}
+    \pause \item 按照上述方法计算出每个物件影响角度的区间，记录端点（线？←\_←）并排序
+    \pause \item 跨过 \pm \pi 的位置拆分为两个区间
+    \pause \item 枚举两个相邻端点，检查它们所夹区间是否被恰好一个物件覆盖
+    \pause \item 排序 $O(N^2)$，枚举共 $O(N)$ 个区间，检查一次 $O(N)$
+    \item 总时间复杂度 $O(N^2)$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Algorithm 6}
+
+我会快速排序！\includegraphics[scale=0.666]{yy.png} \newline\newline
+
+\pause $O(N \log N) + O(N^2) = O(N^2)$
+
+\end{frame}
+
+\begin{frame}{Algorithm 7}
+
+“枚举两个相邻端点，检查它们所夹区间是否被恰好一个物件覆盖”\newline\newline
+
+优化？
+
+\end{frame}
+
+\begin{frame}{Algorithm 7}
+
+\begin{figure}[h]\centering
+\includegraphics[scale=0.333]{a5.png}
+\end{figure}
+
+把区间转化成“事件”，对事件排序并依次处理，记录上个事件的位置与%
+当前覆盖层数，判断层数 = 1 时增加答案。（常用 trick）
+
+时间复杂度 $O(N \log N) + O(N) = O(N \log N)$
 
 \end{frame}
 
