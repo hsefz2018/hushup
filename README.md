@@ -13,4 +13,5 @@ RankingWebServer 使用的图标为 Nekoroll 于 Store Art Contest (2012) 中创
 * PDF 生成使用了 LaTeX 和 beamer class
 * +1s ![?](_solution/zz.jpg)
 * 题目名称来源于 osu! 的三个 Hush-Hush Medals。
-
+* 被覆盖掉的第一题数据们……  
+![?](data.jpg)
