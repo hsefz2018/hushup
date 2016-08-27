@@ -53,12 +53,15 @@ int main(int argc, char *argv[])
     for (int i = 0; i < MAXN; ++i) {
         do {
             sx1[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
-            sy2[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
-            sx1[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
+            sy1[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
+            sx2[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
             sy2[i] = (int)(rand_distribute() * (coord_max * 2)) - coord_max;
             if ((long long)sx1[i] * sy2[i] - (long long)sx2[i] * sy1[i] < 0) {
                 std::swap(sx1[i], sx2[i]);
                 std::swap(sy1[i], sy2[i]);
+            }
+            if (sx1[i] == sx2[i] && sy1[i] == sy2[i]) {
+                d3 = 0; continue;
             }
             while (dist(sx1[i] - sx2[i], sy1[i] - sy2[i]) > max_radius * 4) {
                 sx2[i] = sx1[i] + (sx2[i] - sx1[i]) / 2;

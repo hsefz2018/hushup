@@ -13,16 +13,15 @@ std::pair<double, char> p[MAXN];
 int ct = 0;
 
 inline double get_range(const double a, const double b) {
-    if (a > b) {
-        if (2 * M_PI - (b - a) < M_PI) return 2 * M_PI - (b - a);
-        else return -1;
-    } else return (b - a);
+    return fmod(b + M_PI * 2 - a, M_PI);
 }
 inline void add_events(const double a, const double b) {
     p[ct++] = std::make_pair(a, +1);
     p[ct++] = std::make_pair(b, -1);
 }
 inline void add_range(const double a, const double b) {
+    if (isnan(a) || isnan(b))
+        fprintf(stderr, "****** mdzz Problemsetter! ******\n");
     if (a < -M_PI) {
         add_events(a + 2 * M_PI, M_PI);
         add_events(-M_PI, b);
@@ -39,8 +38,10 @@ inline void add_range(const double a, const double b) {
 
 int main()
 {
+#ifdef EVAL
     freopen("stumbler.in", "r", stdin);
     freopen("stumbler.out", "w", stdout);
+#endif
 
     scanf("%d%d", &nc, &ns);
     int x1, y1, x2, y2, r;

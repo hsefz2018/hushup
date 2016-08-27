@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
         printf("%d %d %d\n", cy[i], cx[i], cr[i]);
     }
     for (int i = 0; i < real_ns; ++i) {
-        printf("%d %d %d %d %d\n", sy1[i], sx1[i], sy2[i], sx2[i], sr[i]);
+        printf("%d %d %d %d %d\n", sy2[i], sx2[i], sy1[i], sx1[i], sr[i]);
     }
 
     return 0;
